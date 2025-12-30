@@ -2,7 +2,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { UserProfile, MentalLog, CalendarEvent } from "../types";
 
 // Initialize Gemini Client
-const apiKey = process.env.API_KEY || ''; // Ensure this is set in your Vercel/Env variables
+const apiKey = process.env.GEMINI_API_KEY || ''; // Ensure this is set in your Vercel/Env variables
 const ai = new GoogleGenAI({ apiKey });
 
 export const generateCoachResponse = async (

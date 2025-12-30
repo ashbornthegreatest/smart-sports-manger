@@ -18,7 +18,8 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState('dashboard');
 
   useEffect(() => {
-    // 1. Initialize Demo Data if storage is empty
+    // 1. Initialize Demo Data if storage is empty (Handled in index.tsx but double check safe here)
+    // initDemoData is synchronous so calling it multiple times is safe (it has checks)
     initDemoData();
 
     // 2. Check for active session
@@ -96,7 +97,7 @@ const App: React.FC = () => {
 
   // 2. Onboarding Guard
   if (!data || !data.profile) {
-    return <Onboarding onComplete={handleOnboardingComplete} />;
+    return <Onboarding onComplete={handleOnboardingComplete} onCancel={handleLogout} />;
   }
 
   // 3. Main App Layout
@@ -106,7 +107,7 @@ const App: React.FC = () => {
         return <Dashboard 
           data={data} 
           onNavigate={setCurrentView} 
-          onUpdateData={updateData} // Pass the updater
+          onUpdateData={updateData} 
         />;
       case 'ai-coach':
         return <AICoach data={data} />;

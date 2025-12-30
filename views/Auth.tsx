@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getStoredUsers, UserSummary } from '../services/storage';
-import { User, Plus, ArrowRight, Activity } from 'lucide-react';
+import { User, Plus, ArrowRight, Activity, Zap } from 'lucide-react';
 
 interface AuthProps {
   onLogin: (userId?: string) => void;
@@ -19,10 +19,8 @@ export const Auth: React.FC<AuthProps> = ({ onLogin, onSignup }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // For standard email login/signup, we proceed without an ID (new session/onboarding)
-    // In a real backend app, this would verify creds and return the user ID.
     if (isLoginView) {
-        onLogin(undefined); // Generic login (start fresh if no ID map)
+        onLogin(undefined); 
     } else {
         onSignup();
     }
@@ -35,7 +33,7 @@ export const Auth: React.FC<AuthProps> = ({ onLogin, onSignup }) => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-apex-950 relative overflow-hidden font-sans text-gray-100">
       
-      {/* Left Side: Quick Login (If users exist) */}
+      {/* Left Side: Auth Form & Quick Login */}
       <div className="flex-1 flex flex-col justify-center p-8 md:p-12 relative z-10 border-b md:border-b-0 md:border-r border-apex-800 bg-apex-950/50 backdrop-blur-sm">
         <div className="max-w-md mx-auto w-full">
           <div className="mb-8">
@@ -45,37 +43,8 @@ export const Auth: React.FC<AuthProps> = ({ onLogin, onSignup }) => {
              <p className="text-gray-400">Elite Performance Management</p>
           </div>
 
-          {savedUsers.length > 0 && (
-            <div className="animate-fade-in space-y-4">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Quick Login</h3>
-              <div className="grid gap-3">
-                {savedUsers.map((user) => (
-                  <button
-                    key={user.id}
-                    onClick={() => handleQuickLogin(user.id)}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-apex-900 border border-apex-800 hover:border-apex-primary/50 hover:bg-apex-800 transition-all group text-left"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-apex-800 to-apex-900 flex items-center justify-center border border-apex-700 group-hover:border-apex-primary text-gray-300 group-hover:text-white transition-colors">
-                      <User size={20} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-bold text-white group-hover:text-apex-primary transition-colors">{user.name}</p>
-                      <p className="text-xs text-gray-500">{user.sport}</p>
-                    </div>
-                    <ArrowRight size={18} className="text-apex-800 group-hover:text-apex-primary transform group-hover:translate-x-1 transition-all" />
-                  </button>
-                ))}
-              </div>
-              
-              <div className="relative py-6">
-                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-apex-800"></div></div>
-                <div className="relative flex justify-center text-sm"><span className="px-2 bg-apex-950 text-gray-500">or</span></div>
-              </div>
-            </div>
-          )}
-
-           {/* Default Login/Signup Form */}
-           <div className={savedUsers.length > 0 ? "opacity-70 hover:opacity-100 transition-opacity" : ""}>
+          {/* Login/Signup Form */}
+          <div className="animate-fade-in">
              <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Visual Only Inputs for MVP */}
                 {!savedUsers.length && (
@@ -126,6 +95,33 @@ export const Auth: React.FC<AuthProps> = ({ onLogin, onSignup }) => {
               </p>
             </div>
            </div>
+
+           {/* Quick Login Section (Below Form) */}
+           {savedUsers.length > 0 && (
+            <div className="mt-8 pt-8 border-t border-apex-800 animate-fade-in space-y-4">
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <Zap size={14} className="text-apex-accent" /> Quick Login
+              </h3>
+              <div className="grid gap-3">
+                {savedUsers.map((user) => (
+                  <button
+                    key={user.id}
+                    onClick={() => handleQuickLogin(user.id)}
+                    className="flex items-center gap-4 p-4 rounded-xl bg-apex-900 border border-apex-800 hover:border-apex-primary/50 hover:bg-apex-800 transition-all group text-left"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-apex-800 to-apex-900 flex items-center justify-center border border-apex-700 group-hover:border-apex-primary text-gray-300 group-hover:text-white transition-colors">
+                      <User size={20} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-white group-hover:text-apex-primary transition-colors">{user.name}</p>
+                      <p className="text-xs text-gray-500">{user.sport}</p>
+                    </div>
+                    <ArrowRight size={18} className="text-apex-800 group-hover:text-apex-primary transform group-hover:translate-x-1 transition-all" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

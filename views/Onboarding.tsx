@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { UserProfile, TrainingPhase, ExperienceLevel } from '../types';
 import { SPORTS_LIST } from '../constants';
-import { ArrowRight, Check, Trophy, Activity, User, ArrowLeft } from 'lucide-react';
+import { ArrowRight, Check, Trophy, Activity, User, ArrowLeft, X } from 'lucide-react';
 
 interface OnboardingProps {
   onComplete: (profile: UserProfile) => void;
+  onCancel: () => void;
 }
 
-export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
+export const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onCancel }) => {
   const [step, setStep] = useState(1);
   
   // Form State
@@ -43,7 +44,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
   // Steps Rendering
   const renderStep1_Identity = () => (
     <div className="space-y-6 animate-fade-in">
-      <div className="text-center mb-8">
+      <div className="text-center mb-8 relative">
         <h2 className="text-3xl font-bold text-white mb-2">Welcome to APEX</h2>
         <p className="text-gray-400">Let's build your athlete profile.</p>
       </div>
@@ -222,10 +223,19 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
 
   return (
     <div className="min-h-screen bg-apex-950 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-apex-950 md:bg-apex-900 md:border md:border-apex-800 rounded-2xl p-8 shadow-2xl">
+      <div className="w-full max-w-lg bg-apex-950 md:bg-apex-900 md:border md:border-apex-800 rounded-2xl p-8 shadow-2xl relative">
         
+        {/* Cancel Button */}
+        <button 
+          onClick={onCancel}
+          className="absolute top-4 right-4 text-gray-500 hover:text-white transition"
+          title="Cancel Registration"
+        >
+          <X size={24} />
+        </button>
+
         {/* Progress Bar */}
-        <div className="flex gap-2 mb-8">
+        <div className="flex gap-2 mb-8 mt-2">
           {[1, 2, 3, 4].map(i => (
             <div key={i} className={`h-1 flex-1 rounded-full ${step >= i ? 'bg-apex-primary' : 'bg-apex-800'}`} />
           ))}
